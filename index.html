@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Navigation System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #38bdf8;
+        }
+
+        .container {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #38bdf8;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+        }
+
+        .output {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .box {
+            margin-top: 10px;
+            padding: 10px;
+            background: #334155;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🚀 Smart Navigation System</h1>
+    <p>Find path using BFS & DFS</p>
+
+    <div class="container">
+        <input type="text" id="start" placeholder="Enter Start Node (A-E)">
+        <input type="text" id="goal" placeholder="Enter Goal Node (A-E)">
+        <br>
+        <button onclick="findPath()">Find Path</button>
+
+        <div class="output">
+            <div class="box" id="bfsResult">BFS Path: </div>
+            <div class="box" id="dfsResult">DFS Path: </div>
+        </div>
+    </div>
+
+    <script>
+        const graph = {
+            'A': ['B', 'C'],
+            'B': ['D'],
+            'C': ['D'],
+            'D': ['E'],
+            'E': []
+        };
+
+        function bfs(start, goal) {
+            let visited = [];
+            let queue = [[start]];
+
+            while (queue.length > 0) {
+                let path = queue.shift();
+                let node = path[path.length - 1];
+
+                if (!visited.includes(node)) {
+                    let neighbors = graph[node] || [];
+
+                    for (let neighbor of neighbors) {
+                        let newPath = [...path, neighbor];
+                        queue.push(newPath);
+
+                        if (neighbor === goal) {
+                            return newPath;
+                        }
+                    }
+                    visited.push(node);
+                }
+            }
+            return null;
+        }
+
+        function dfs(start, goal, path = []) {
+            path = [...path, start];
+
+            if (start === goal) return path;
+
+            for (let neighbor of (graph[start] || [])) {
+                if (!path.includes(neighbor)) {
+                    let newPath = dfs(neighbor, goal, path);
+                    if (newPath) return newPath;
+                }
+            }
+            return null;
+        }
+
+        function findPath() {
+            let start = document.getElementById("start").value.toUpperCase().trim();
+            let goal = document.getElementById("goal").value.toUpperCase().trim();
+
+            if (!graph[start] || !graph[goal]) {
+                alert("Invalid nodes! Use A-E only.");
+                return;
+            }
+
+            let bfsPath = bfs(start, goal);
+            let dfsPath = dfs(start, goal);
+
+            document.getElementById("bfsResult").innerText =
+                "BFS Path: " + (bfsPath ? bfsPath.join(" → ") : "No Path Found");
+
+            document.getElementById("dfsResult").innerText =
+                "DFS Path: " + (dfsPath ? dfsPath.join(" → ") : "No Path Found");
+        }
+    </script>
+
+</body>
+</html>

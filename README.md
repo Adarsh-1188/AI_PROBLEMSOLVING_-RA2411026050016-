@@ -120,7 +120,7 @@ DFS Path: A → C → D → E
 * User-defined graph input
 * Graph visualization (nodes & edges)
 * Weighted graph support (Dijkstra's Algorithm)
-* ~~Deployment using GitHub Pages~~ ✅ Done — [Live here](https://adarsh-1188.github.io/system_navigation/)
+* Deployment using GitHub Pages ✅ Done — [Live here](https://adarsh-1188.github.io/system_navigation/)
 
 ---
 
